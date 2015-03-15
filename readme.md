@@ -1,7 +1,7 @@
 Voyager
 -------
 
-__Recursively traverse a directory and yield a JSON tree of file sizes.__
+Recursively traverse a directory and yield a JSON tree of file sizes.
 
 
 Installation
@@ -87,7 +87,7 @@ Output JSON Format
 Voyager outputs a nested JSON tree.  Each branch of the tree has the following properties.
 
 |Property     | Description
-|-
+|-------------|------------
 | name        | The file path of the current branch
 | children    | An array of branches that represent files and subdirectories of the current branch
 | size        | The size of the file or directory in bytes
