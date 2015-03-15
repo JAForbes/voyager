@@ -4,8 +4,9 @@ var program = require('commander')
 program
 	.version('0.0.0')
 	.description('Recursively gather JSON filesize data')
-	.option('-r --file_relevance <bytes>','The minimum size a file can be for it to be included in the output',Number)
+	.option('-f --file_relevance <bytes>','The minimum size a file can be for it to be included in the output',Number)
 	.option('-d --directory_relevance <bytes>','The minimum size a directory can be for it to be included in the output',Number)
+	.option('-r --relevance <bytes>','The minimum size a directory or a file can be for it to be included in the output',Number)
 	.option('-o --output <name>','The output path of the tree json',String)
 	.option('-p --pretty','Pretty print the JSON tree output')
 	.option('-i --ignore <csv of patterns>','Case insensitive patterns to ignore',regexCSV)
@@ -22,6 +23,7 @@ var R = require('ramda')
 //must be > 1000b to add to the tree
 var file_relevance = program.file_relevance || 0
 var directory_relevance = program.directory_relevance || 0
+var relevance = program.relevance || 0
 var ignores = program.ignore || []
 
 var tree = {}
@@ -54,20 +56,28 @@ parseDirectory = function(tree){
 						traversals.push(parseDirectory(branch))
 						children.push(branch)
 					} else {
-						branch.size > file_relevance && children.push(branch)
+
+						children.push(branch)
 					}
 				}
 				return children
 			},[])
 
-
 			return Promise.all(traversals)
 				.then(function(branches){
 					tree.size += R.sum(R.pluck('size',branches))
 
-					tree.children = branches.map(function(branch){
-						return branch.size > directory_relevance && branch || branch.name
-					})
+					tree.children = tree.children.reduce(function(children, branch){
+						if(branch.size > relevance){
+							if(branch.isDirectory){
+								branch.size > directory_relevance && children.push(branch)
+							} else {
+								branch.size > file_relevance && children.push(branch)
+							}
+						}
+
+						return children
+					},[])
 
 
 
@@ -115,6 +125,7 @@ module.exports = function(options){
 	ignores = options.ignores || []
 	file_relevance = options.file_relevance || 0
 	directory_relevance = options.directory_relevance || 0
+	relevance = options.relevance || 0
 	tree = options.tree || { name: '.' }
 
 	return parseDirectory(tree)

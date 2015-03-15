@@ -1,7 +1,19 @@
 Voyager
 -------
 
-Recursively traverse a directory and yield a JSON tree of file sizes.
+__Recursively traverse a directory and yield a JSON tree of file sizes.__
+
+
+Installation
+============
+
+Unix:
+
+`sudo npm install JAForbes/voyager -g`
+
+Windows:
+
+`npm install JAForbes/voyager -g`
 
 Command Line
 ============
@@ -16,8 +28,9 @@ Command Line
 
     -h, --help                        output usage information
     -V, --version                     output the version number
-    -r --file_relevance <bytes>       The minimum size a file can be for it to be included in the output
+    -f --file_relevance <bytes>       The minimum size a file can be for it to be included in the output
     -d --directory_relevance <bytes>  The minimum size a directory can be for it to be included in the output
+    -r --relevance <bytes>            The minimum size a directory or a file can be for it to be included in the output
     -o --output <name>                The output path of the tree json
     -p --pretty                       Pretty print the JSON tree output
     -i --ignore <csv of patterns>     Case insensitive patterns to ignore
@@ -55,6 +68,11 @@ voyager({
 
   directory_relevance: 0
 
+  // The smallest a directory or a file can be for it to be included in the output
+  // This doesn't speed up the algorithm, just leaves you with less to sift through
+
+  relevance: 0
+
 }).then(function( tree ){
 
   //Use the tree here
@@ -76,8 +94,11 @@ Voyager outputs a nested JSON tree.  Each branch of the tree has the following p
 | isDirectory | A flag that states whether the current branch is a file or a directory
 
 
-Here is the output of voyager run on its own source code directory, ignoring git `voyager -p -i ['git']`
+Here is the output of voyager run on its own source code directory, ignoring git and any files under 20mb
 
+```
+node app -i git -p -r 20000
+```
 
 
 ```json
@@ -85,7 +106,7 @@ Here is the output of voyager run on its own source code directory, ignoring git
 {
   "name": ".",
   "isDirectory": true,
-  "size": 531969,
+  "size": 534233,
   "children": [
     {
       "name": "./node_modules",
@@ -98,17 +119,9 @@ Here is the output of voyager run on its own source code directory, ignoring git
           "isDirectory": true,
           "children": [
             {
-              "name": "./node_modules/commander/node_modules",
-              "size": 3153,
-              "isDirectory": true,
-              "children": [
-                {
-                  "name": "./node_modules/commander/node_modules/graceful-readlink",
-                  "size": 3153,
-                  "isDirectory": true,
-                  "children": []
-                }
-              ]
+              "name": "./node_modules/commander/index.js",
+              "size": 23039,
+              "isDirectory": false
             }
           ]
         },
@@ -116,27 +129,7 @@ Here is the output of voyager run on its own source code directory, ignoring git
           "name": "./node_modules/promise",
           "size": 27469,
           "isDirectory": true,
-          "children": [
-            {
-              "name": "./node_modules/promise/lib",
-              "size": 7217,
-              "isDirectory": true,
-              "children": []
-            },
-            {
-              "name": "./node_modules/promise/node_modules",
-              "size": 8063,
-              "isDirectory": true,
-              "children": [
-                {
-                  "name": "./node_modules/promise/node_modules/asap",
-                  "size": 8063,
-                  "isDirectory": true,
-                  "children": []
-                }
-              ]
-            }
-          ]
+          "children": []
         },
         {
           "name": "./node_modules/ramda",
@@ -147,7 +140,18 @@ Here is the output of voyager run on its own source code directory, ignoring git
               "name": "./node_modules/ramda/dist",
               "size": 238228,
               "isDirectory": true,
-              "children": []
+              "children": [
+                {
+                  "name": "./node_modules/ramda/dist/ramda.js",
+                  "size": 216224,
+                  "isDirectory": false
+                },
+                {
+                  "name": "./node_modules/ramda/dist/ramda.min.js",
+                  "size": 22004,
+                  "isDirectory": false
+                }
+              ]
             },
             {
               "name": "./node_modules/ramda/src",
