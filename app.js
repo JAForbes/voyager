@@ -1,10 +1,4 @@
-var fs = require('fs')
-var Promise = require('promise')
-var readdir = Promise.denodeify(fs.readdir)
-var stat = Promise.denodeify(fs.stat)
-var R = require('ramda')
 var program = require('commander')
-
 
 program
 	.version('0.0.0')
@@ -15,6 +9,13 @@ program
 	.option('-p --pretty','Pretty print the JSON tree output')
 	.option('-i --ignore <csv of patterns>','Case insensitive patterns to ignore',regexCSV)
 	.parse(process.argv)
+
+
+var fs = require('fs')
+var Promise = require('promise')
+var readdir = Promise.denodeify(fs.readdir)
+var stat = Promise.denodeify(fs.stat)
+var R = require('ramda')
 
 //must be > 1000b to add to the tree
 var file_size_relevant = program.file_relevance || 0

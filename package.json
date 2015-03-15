@@ -1,16 +1,34 @@
 {
-  "name": "fileSizes",
-  "version": "1.0.0",
-  "description": "",
+  "name": "voyager",
+  "version": "0.0.0",
+  "description": "Recursively traverse a directory and yield a JSON tree of file sizes.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "jaforbes",
+  "license": "MIT",
   "dependencies": {
     "commander": "^2.7.1",
     "promise": "^6.1.0",
     "ramda": "^0.11.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JAForbes/voyager.git"
+  },
+  "keywords": [
+    "utility",
+    "fs",
+    "filesize",
+    "filesizes",
+    "directory",
+    "traverse",
+    "voyager"
+  ],
+  "bugs": {
+    "url": "https://github.com/JAForbes/voyager/issues"
+  },
+  "homepage": "https://github.com/JAForbes/voyager"
 }
