@@ -11,15 +11,16 @@ program
 	.parse(process.argv)
 
 
-var fs = require('fs')
+
 var Promise = require('promise')
+var fs = require('fs')
 var readdir = Promise.denodeify(fs.readdir)
 var stat = Promise.denodeify(fs.stat)
 var R = require('ramda')
 
 //must be > 1000b to add to the tree
-var file_size_relevant = program.file_relevance || 0
-var directory_size_relevance = program.directory_relevance || 0
+var file_relevance = program.file_relevance || 0
+var directory_relevance = program.directory_relevance || 0
 var ignores = program.ignore || []
 
 var tree = {}
@@ -51,7 +52,7 @@ parseDirectory = function(tree){
 						traversals.push(parseDirectory(branch))
 						children.push(branch)
 					} else {
-						branch.size > file_size_relevant && children.push(branch)
+						branch.size > file_relevance && children.push(branch)
 					}
 				}
 				return children
@@ -63,7 +64,7 @@ parseDirectory = function(tree){
 					tree.size += R.sum(R.pluck('size',branches))
 
 					tree.children = branches.map(function(branch){
-						return branch.size > directory_size_relevance && branch || branch.name
+						return branch.size > directory_relevance && branch || branch.name
 					})
 
 
@@ -87,18 +88,32 @@ getStats = function(root,files){
 
 }
 
-parseDirectory({
-	name: '.'
-}).then(function(tree){
 
-	var json = program.pretty ?
-		JSON.stringify(tree,null,2) :
-		JSON.stringify(tree)
+if(require.main === module){
+	parseDirectory({
+		name: '.'
+	}).then(function(tree){
 
-	if(program.output){
-		fs.writeFileSync(program.output,json)
-	} else {
-		console.log(json)
-	}
+		var json = program.pretty ?
+			JSON.stringify(tree,null,2) :
+			JSON.stringify(tree)
 
-},console.error)
+		if(program.output){
+			fs.writeFileSync(program.output,json)
+		} else {
+			console.log(json)
+		}
+
+	},console.error)
+}
+
+
+module.exports = function(options){
+	options = options || {}
+	ignores = options.ignores || []
+	file_relevance = options.file_relevance || 0
+	directory_relevance = options.directory_relevance || 0
+	tree = options.tree || { name: '.' }
+
+	return parseDirectory(tree)
+}
