@@ -78,7 +78,7 @@ Voyager outputs a nested JSON tree.  Each branch of the tree has the following p
 
 Here is the output of voyager run on its own source code directory, ignoring git
 
-```
+```json
 
 voyager -p -i ['git']
 
