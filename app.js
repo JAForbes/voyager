@@ -38,6 +38,7 @@ parseDirectory = function(tree){
 		.then(getStats.bind(null,tree.name))
 		.then(function(stats){
 			var traversals = []
+			tree.isDirectory = true
 			tree.size = tree.size || 0
 			tree.size += R.sum(R.pluck('size',stats))
 			tree.children = stats.reduce(function(children, stat){
