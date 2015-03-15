@@ -7,6 +7,8 @@ Recursively traverse a directory and yield a JSON tree of file sizes.
 Installation
 ============
 
+You'll need to have [NodeJS](https://nodejs.org/) installed.
+
 Unix:
 
 `sudo npm install JAForbes/voyager -g`
