@@ -27,6 +27,7 @@
     "traverse",
     "voyager"
   ],
+  "bin": "app.js",
   "bugs": {
     "url": "https://github.com/JAForbes/voyager/issues"
   },
