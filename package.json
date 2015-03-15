@@ -1,0 +1,16 @@
+{
+  "name": "fileSizes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.7.1",
+    "promise": "^6.1.0",
+    "ramda": "^0.11.0"
+  }
+}
