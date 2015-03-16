@@ -96,10 +96,10 @@ Voyager outputs a nested JSON tree.  Each branch of the tree has the following p
 | isDirectory | A flag that states whether the current branch is a file or a directory
 
 
-Here is the output of voyager run on its own source code directory, ignoring git and any files under 20mb
+Here is the output of voyager run on its own source code directory, ignoring git and any files under 20kb
 
 ```
-node app -i git -p -r 20000
+voyager -i git -p -r 20000
 ```
 
 
