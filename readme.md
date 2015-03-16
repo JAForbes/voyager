@@ -22,6 +22,7 @@ Command Line
 
 ```
 
+
   Usage: app [options]
 
   Recursively gather JSON filesize data
@@ -35,7 +36,10 @@ Command Line
     -r --relevance <bytes>            The minimum size a directory or a file can be for it to be included in the output
     -o --output <name>                The output path of the tree json
     -p --pretty                       Pretty print the JSON tree output
+    -c --csv                          Output as csv instead of JSON
     -i --ignore <csv of patterns>     Case insensitive patterns to ignore
+
+
 
 ```
 
