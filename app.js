@@ -20,6 +20,8 @@ program
 
 	.option('-p --pretty','Pretty print the JSON tree output')
 
+	.option('-c --csv', 'Output as csv instead of JSON')
+
 	.option('-i --ignore <csv of patterns>','Case insensitive patterns to ignore',regexCSV)
 
 	.parse(process.argv)
@@ -51,6 +53,10 @@ var directory_relevance = program.directory_relevance || 0
 var relevance = program.relevance || 0
 
 var ignores = program.ignore || []
+
+
+var csv = Promise.denodeify(require('csv').stringify)
+var table = []
 
 
 
@@ -104,6 +110,10 @@ parseDirectory = function(tree){
 
 						isDirectory: stat.isDirectory()
 
+					}
+
+					if(program.csv){
+						table.push(branch)
 					}
 
 					if(branch.isDirectory){
@@ -213,24 +223,29 @@ if(require.main === module){
 	}).then(function(tree){
 
 
+		if(program.csv){
+			var file = table
+			table = table.map(function(row){
+				delete row.children
+			})
+			csv(file,{header:true})
+					.then(
+						write.bind(null,program.output)
+					)
 
-		var json = program.pretty ?
-
-			JSON.stringify(tree,null,2) :
-
-			JSON.stringify(tree)
-
-
-
-		if(program.output){
-
-			fs.writeFileSync(program.output,json)
 
 		} else {
+			var file = program.pretty ?
 
-			console.log(json)
+				JSON.stringify(tree,null,2) :
 
+				JSON.stringify(tree)
+
+			write(program.output,file)
 		}
+
+
+
 
 
 
@@ -239,7 +254,16 @@ if(require.main === module){
 }
 
 
+write = function(path,file){
+	if(program.output){
 
+		fs.writeFileSync(program.output,file)
+
+	} else {
+		console.log(file)
+
+	}
+}
 
 
 module.exports = function(options){
