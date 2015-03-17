@@ -1,6 +1,6 @@
 {
   "name": "voyager",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Recursively traverse a directory and yield a JSON tree of file sizes.",
   "main": "app.js",
   "scripts": {
