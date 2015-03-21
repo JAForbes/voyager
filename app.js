@@ -4,32 +4,6 @@ var program = require('commander')
 
 
 
-program
-
-	.version('0.0.0')
-
-	.description('Recursively gather JSON filesize data')
-
-	.option('-f --file_relevance <bytes>','The minimum size a file can be for it to be included in the output',Number)
-
-	.option('-d --directory_relevance <bytes>','The minimum size a directory can be for it to be included in the output',Number)
-
-	.option('-r --relevance <bytes>','The minimum size a directory or a file can be for it to be included in the output',Number)
-
-	.option('-o --output <name>','The output path of the tree json',String)
-
-	.option('-p --pretty','Pretty print the JSON tree output')
-
-	.option('-c --csv', 'Output as csv instead of JSON')
-
-	.option('-i --ignore <csv of patterns>','Case insensitive patterns to ignore',regexCSV)
-
-
-
-
-
-
-
 
 var Promise = require('promise')
 
@@ -215,7 +189,27 @@ getStats = function(root,files){
 
 if(require.main === module){
 
-	program.parse(process.argv)
+	program
+
+		.version('0.0.0')
+
+		.description('Recursively gather JSON filesize data')
+
+		.option('-f --file_relevance <bytes>','The minimum size a file can be for it to be included in the output',Number)
+
+		.option('-d --directory_relevance <bytes>','The minimum size a directory can be for it to be included in the output',Number)
+
+		.option('-r --relevance <bytes>','The minimum size a directory or a file can be for it to be included in the output',Number)
+
+		.option('-o --output <name>','The output path of the tree json',String)
+
+		.option('-p --pretty','Pretty print the JSON tree output')
+
+		.option('-c --csv', 'Output as csv instead of JSON')
+
+		.option('-i --ignore <csv of patterns>','Case insensitive patterns to ignore',regexCSV)
+
+		.parse(process.argv)
 
 
 	parseDirectory({
