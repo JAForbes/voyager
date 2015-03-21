@@ -24,7 +24,6 @@ program
 
 	.option('-i --ignore <csv of patterns>','Case insensitive patterns to ignore',regexCSV)
 
-	.parse(process.argv)
 
 
 
@@ -215,6 +214,9 @@ getStats = function(root,files){
 
 
 if(require.main === module){
+
+	program.parse(process.argv)
+
 
 	parseDirectory({
 
